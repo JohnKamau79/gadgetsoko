@@ -14,25 +14,24 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::prefix('/')->group( function() {
-    Route::get('home', function() { return view('gadgetsoko.home'); })->name('home');
-    Route::get('about', function() { return view('gadgetsoko.about'); })->name('about');;
-    Route::get('product', [ProductController::class, 'index'])->name('product');
-    Route::get('testimonial', function() { return view('gadgetsoko.testimonial'); })->name('testimonial');
-    Route::get('contact', function() { return view('gadgetsoko.contact'); })->name('contact');
-});
-
-Route::prefix('/products')->group( function() {
-    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/', [ProductController::class, 'store'])->name('products.store');;
-});
-
 Route::get('/', function () {
-    return view('gadgetsoko.home');
+    return view('auth.login');
 });
-Route::get('/register', function () {
-    return view('auth.register');
+
+// Pages Routes
+Route::prefix('/')->middleware(['auth', 'verified'])->group( function() {
+    Route::get('home', function() { return view('home'); })->name('home');
+    Route::get('about', function() { return view('about'); })->name('about');;
+    Route::get('testimonial', function() { return view('testimonial'); })->name('testimonial');
+    Route::get('contact', function() { return view('contact'); })->name('contact');
+    Route::get('product', [ProductController::class, 'index'])->name('product');
+});
+
+// Products Routes
+Route::prefix('/products')->middleware(['auth', 'verified'])->group( function() {
+    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
 });
 
 Route::get('/dashboard', function () {

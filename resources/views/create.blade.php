@@ -1,10 +1,8 @@
-@extends('gadgetsoko.layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Product-Page')
 
 @section('content')
-
-    @include('gadgetsoko.components.nav')
 
     <!-- FORM -->
     <section class="max-w-3xl mx-auto mt-16 bg-white p-8 rounded-lg shadow-md">
@@ -56,5 +54,4 @@
         </form>
     </section>
 
-    @include('gadgetsoko.components.footer')
 @endsection

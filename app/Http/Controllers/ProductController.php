@@ -9,10 +9,23 @@ class ProductController extends Controller
 {
     public function index() {
         $products = Product::orderBy('id', 'desc')->paginate(8);
-        return view('gadgetsoko.product', compact('products'));
+        return view('product', compact('products'));
+    }
+    
+    public function show($id) {
+        $product = Product::findOrFail($id);
+
+        $relatedProducts = Product::where('category', $product->category)
+                           ->where('id', '!=', $product->id)
+                           ->take(4)
+                           ->get();
+
+        return view('productdetails', compact('product', 'relatedProducts'));
+
+
     }
     public function create() {
-        return view('gadgetsoko.create');
+        return view('create');
     }
 
     public function store(Request $request )   {
@@ -38,5 +51,10 @@ class ProductController extends Controller
 
             return redirect()->route('product')->with('success', 'Product created successfully!');
         
+    }
+
+    public function showByCategory() {
+        $products = Product::where('category', 'smartphone')->get();
+        return view('product', compact('products'));
     }
 }

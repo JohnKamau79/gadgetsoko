@@ -1,10 +1,9 @@
-@extends('gadgetsoko.layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Home-Page')
 
 @section('content')
 
-@include('gadgetsoko.components.nav')
   <!-- HERO SECTION -->
   <section id="home" class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between py-20 px-6">
@@ -123,5 +122,4 @@
     </form>
   </section>
 
-@include('gadgetsoko.components.footer')
 @endsection

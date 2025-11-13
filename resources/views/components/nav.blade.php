@@ -12,7 +12,7 @@
       <a href="{{ route('testimonial') }}" class="hover:text-blue-600">Testimonials</a>
       <a href="{{ route('contact') }}" class="hover:text-blue-600">Contact</a>
     </nav>
-
+    
     <!-- Profile Dropdown -->
     <details class="relative">
       <summary class="cursor-pointer list-none">

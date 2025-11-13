@@ -1,10 +1,8 @@
-@extends('gadgetsoko.layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Contact-Page')
 
 @section('content')
-
-@include('gadgetsoko.components.nav')
 
   <!-- HERO SECTION -->
   <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 text-center">
@@ -61,5 +59,4 @@
     <a href="products.html" class="bg-yellow-400 text-gray-900 font-semibold px-8 py-3 rounded-lg hover:bg-yellow-300 transition">Shop Now</a>
   </section>
 
-@include('gadgetsoko.components.footer')
 @endsection
