@@ -45,11 +45,11 @@
                 <p class="px-4 py-2 text-gray-700 text-sm">No items in cart</p>
                 <!-- Example Item -->
                 <!--
-                        <div class="px-4 py-2 border-b flex justify-between items-center">
-                            <span class="text-sm text-gray-700">Product 1</span>
-                            <span class="text-xs text-gray-500">$15</span>
-                        </div>
-                        -->
+                            <div class="px-4 py-2 border-b flex justify-between items-center">
+                                <span class="text-sm text-gray-700">Product 1</span>
+                                <span class="text-xs text-gray-500">$15</span>
+                            </div>
+                            -->
                 <div class="px-4 py-2 text-center">
                     <a class="text-indigo-600 text-sm font-semibold hover:underline">View Cart</a>
                 </div>
@@ -57,44 +57,44 @@
         </div>
 
         <div>
-            <a href={{ route('products.create')  }}
+            <a href={{ route('products.create') }}
                 class="inline-block bg-yellow-400 text-gray-900 font-bold px-6 py-3 rounded-lg shadow hover:bg-yellow-300 transition">
                 Create Post
             </a>
         </div>
     </div>
     <!-- FILTERS SECTION -->
-<section class=" my-3">
-    <div
-        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:justify-around md:items-center space-y-4 md:space-y-0">
-        <!-- Category Filter -->
-        <div class="flex space-x-4 items-center">
-            <label for="category" class="font-semibold">Category:</label>
-            <select id="category"
-                class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
-                <option>All</option>
-                <option>Phones</option>
-                <option>Laptops</option>
-                <option>Cameras</option>
-                <option>Accessories</option>
-                <option>Headphones</option>
-            </select>
-        </div>
+    <section class=" my-3">
+        <div
+            class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:justify-around md:items-center space-y-4 md:space-y-0">
+            <!-- Category Filter -->
+            <div class="flex space-x-4 items-center">
+                <label for="category" class="font-semibold">Category:</label>
+                <select id="category"
+                    class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <option>All</option>
+                    <option>Phones</option>
+                    <option>Laptops</option>
+                    <option>Cameras</option>
+                    <option>Accessories</option>
+                    <option>Headphones</option>
+                </select>
+            </div>
 
-        <!-- Price Filter -->
-        <div class="flex space-x-4 items-center">
-            <label for="price" class="font-semibold">Price:</label>
-            <select id="price"
-                class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
-                <option>All</option>
-                <option>Under $100</option>
-                <option>$100 - $500</option>
-                <option>$500 - $1000</option>
-                <option>Above $1000</option>
-            </select>
+            <!-- Price Filter -->
+            <div class="flex space-x-4 items-center">
+                <label for="price" class="font-semibold">Price:</label>
+                <select id="price"
+                    class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <option>All</option>
+                    <option>Under $100</option>
+                    <option>$100 - $500</option>
+                    <option>$500 - $1000</option>
+                    <option>Above $1000</option>
+                </select>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 <!-- PRODUCTS GRID -->

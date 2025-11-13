@@ -19,16 +19,21 @@ Route::get('/', function () {
 });
 
 // Pages Routes
-Route::prefix('/')->middleware(['auth', 'verified'])->group( function() {
-    Route::get('home', function() { return view('home'); })->name('home');
-    Route::get('about', function() { return view('about'); })->name('about');;
-    Route::get('testimonial', function() { return view('testimonial'); })->name('testimonial');
-    Route::get('contact', function() { return view('contact'); })->name('contact');
+Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('home', function () {
+        return view('home'); })->name('home');
+    Route::get('about', function () {
+        return view('about'); })->name('about');
+    ;
+    Route::get('testimonial', function () {
+        return view('testimonial'); })->name('testimonial');
+    Route::get('contact', function () {
+        return view('contact'); })->name('contact');
     Route::get('product', [ProductController::class, 'index'])->name('product');
 });
 
 // Products Routes
-Route::prefix('/products')->middleware(['auth', 'verified'])->group( function() {
+Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/', [ProductController::class, 'store'])->name('products.store');
     Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
@@ -44,4 +49,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
