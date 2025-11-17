@@ -2,7 +2,7 @@
   <footer class="bg-gray-900 text-gray-400 py-10">
     <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
       <div>
-        <h4 class="text-white text-xl font-semibold mb-3">MemziGadgets</h4>
+        <h4 class="text-white text-xl font-semibold mb-3">GadgetSoko</h4>
         <p>Your trusted electronics store — connecting Kenya to the world of tech.</p>
       </div>
       <div>
@@ -17,12 +17,12 @@
       </div>
       <div>
         <h4 class="text-white text-lg font-semibold mb-3">Contact Info</h4>
-        <p>Email: support@memzigadgets.com</p>
+        <p>Email: support@gadgetsoko.com</p>
         <p>Phone: +254 712 345 678</p>
         <p>Address: Westlands, Nairobi</p>
       </div>
     </div>
     <div class="text-center mt-10 text-gray-500 text-sm">
-      © 2025 MemziGadgets. All rights reserved.
+      © 2025 GadgetSoko. All rights reserved.
     </div>
   </footer>

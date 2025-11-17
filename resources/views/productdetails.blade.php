@@ -42,6 +42,49 @@
         </div>
     </section>
 
+
+        @if(auth()->check())
+<form method="POST" action="{{ route('productReview.store', $product->id) }}" class="mt-6 flex flex-col w-1/2 border border-gray-300 p-2 rounded-md bg-white justify-center ml-12 pl-8">
+    @csrf
+
+    <label>Rating</label>
+    <select name="rating" class="border rounded p-2 px-8 w-1/4">
+        <option value="1">1 ★</option>
+        <option value="2">2 ★★</option>
+        <option value="3">3 ★★★</option>
+        <option value="4">4 ★★★★</option>
+        <option value="5">5 ★★★★★</option>
+    </select>
+
+    <label>Comment</label>
+    <textarea name="comment" class="border rounded p-2 w-1/2"></textarea>
+
+    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-1/4 m-auto">
+        Submit Review
+    </button>
+</form>
+@endif
+
+
+<h3 class="text-xl font-bold mt-10">Reviews</h3>
+
+@forelse($product->reviews ?? [] as $review)
+    <div class="border-b py-4">
+        <p class="font-semibold">{{ $review->user->name }}</p>
+        <p>
+            Rating:
+            <span class="text-yellow-500">
+                {{ str_repeat('★', $review->rating) }}
+            </span>
+        </p>
+        <p>{{ $review->comment }}</p>
+        <small class="text-gray-500">{{ $review->created_at->diffForHumans() }}</small>
+    </div>
+@empty
+    <p>No reviews yet.</p>
+@endforelse
+
+
     <!-- RELATED PRODUCTS -->
     @if ($relatedProducts->count() > 0)
         <section class="max-w-6xl mx-auto my-16 px-6">
@@ -69,6 +112,7 @@
                 @endforeach
             </div>
         </section>
+
     @else
         <h3>No Related Products Found!</h3>
 
