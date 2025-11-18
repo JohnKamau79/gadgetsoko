@@ -74,7 +74,7 @@
         <p>
             Rating:
             <span class="text-yellow-500">
-                {{ str_repeat('★', $review->rating) }}
+                {{ str_repeat('⭐', $review->rating) }}
             </span>
         </p>
         <p>{{ $review->comment }}</p>

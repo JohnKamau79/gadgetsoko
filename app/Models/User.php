@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\ProductReview;
+use App\Models\WebsiteReview;
 
 class User extends Authenticatable
 {
@@ -27,6 +28,10 @@ class User extends Authenticatable
 
     public function productReviews() {
         return $this->hasMany(ProductReview::class);
+    }
+
+    public function websiteReviews() {
+        return $this->hasMany(WebsiteReview::class);
     }
 
     /**
