@@ -5,42 +5,55 @@
 @section('content')
 
     <!-- PRODUCT DETAILS -->
-    <section class="max-w-4xl mx-auto my-16 bg-white p-8 rounded-lg shadow-md">
-        <div class="flex flex-col md:flex-row gap-8">
-            <!-- Product Image -->
-            <div class="md:w-1/2">
-                @if ($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                        class="w-full h-96 object-cover rounded-lg shadow-sm">
-                @else
-                    <div class="w-full h-96 flex items-center justify-center bg-gray-200 rounded-lg">
-                        <span class="text-gray-500">No image available</span>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Product Info -->
-            <div class="md:w-1/2 space-y-4">
-                <h2 class="text-3xl font-bold text-gray-900">{{ $product->title }}</h2>
-                <p class="text-gray-600 text-sm uppercase tracking-wide">
-                    Category: <span class="font-semibold text-gray-800">{{ $product->category ?? 'N/A' }}</span>
-                </p>
-                <p class="text-gray-700 leading-relaxed">
-                    {{ $product->description ?? 'No description provided.' }}
-                </p>
-                <p class="text-2xl font-bold text-blue-600 mt-4">
-                    ${{ number_format($product->price, 2) }}
-                </p>
-
-                <div class="mt-6">
-                    <a href="{{ route('product') }}"
-                        class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition">
-                        Back to Products
-                    </a>
+<section class="max-w-4xl mx-auto my-16 bg-white p-8 rounded-lg shadow-md">
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Product Image -->
+        <div class="md:w-1/2">
+            @if ($product->image)
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                    class="w-full h-96 object-cover rounded-lg shadow-sm">
+            @else
+                <div class="w-full h-96 flex items-center justify-center bg-gray-200 rounded-lg">
+                    <span class="text-gray-500">No image available</span>
                 </div>
+            @endif
+        </div>
+
+        <!-- Product Info -->
+        <div class="md:w-1/2 space-y-4">
+            <h2 class="text-3xl font-bold text-gray-900">{{ $product->title }}</h2>
+
+            <p class="text-gray-600 text-sm uppercase tracking-wide">
+                Category:
+                <span class="font-semibold text-gray-800">{{ $product->category ?? 'N/A' }}</span>
+            </p>
+
+            <p class="text-gray-700 leading-relaxed">
+                {{ $product->description ?? 'No description provided.' }}
+            </p>
+
+            <p class="text-2xl font-bold text-blue-600 mt-4">
+                ${{ number_format($product->price, 2) }}
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="mt-6 flex gap-4">
+                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Add to Cart
+                    </button>
+                </form>
+
+                <a href="{{ route('product') }}"
+                    class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition">
+                    Back to Products
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 
         @if(auth()->check())

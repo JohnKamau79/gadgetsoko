@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $products = Product::orderBy('id', 'desc')->paginate(8);
-        return view('product', compact('products'));
+
+        $user = Auth::user();
+        $cartItems = Cart::where('user_id', $user->id)->take(3)->orderBy('id', 'desc')->get();
+        $allCartItems = Cart::where('user_id', $user->id)->get();
+        $quantity = $cartItems->sum('quantity');
+
+        return view('product', compact('products', 'cartItems', 'quantity'));
     }
 
     public function show($id)
@@ -24,7 +32,6 @@ class ProductController extends Controller
             ->get();
 
         return view('productdetails', compact('product', 'relatedProducts'));
-
 
     }
     public function create()

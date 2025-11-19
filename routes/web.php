@@ -24,12 +24,13 @@ Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
         return view('home'); })->name('home');
     Route::get('about', function () {
         return view('about'); })->name('about');
-    ;
     Route::get('testimonial', function () {
         return view('testimonial'); })->name('testimonial');
     Route::get('contact', function () {
         return view('contact'); })->name('contact');
     Route::get('product', [ProductController::class, 'index'])->name('product');
+    // Route::get('cart', function () {
+    //     return view('cart');})->name('cart');
 });
 
 // Products Routes
@@ -52,3 +53,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 require __DIR__ . '/productReview.php';
 require __DIR__ . '/websiteReview.php';
+require __DIR__ . '/addToCart.php';

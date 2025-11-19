@@ -36,22 +36,27 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 7h13l-1.5-7M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                 </svg>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">0</span>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">{{ $quantity }}</span>
             </button>
 
             <!-- Dropdown Menu -->
             <div x-show="open" @click.away="open = false"
                 class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                <p class="px-4 py-2 text-gray-700 text-sm">No items in cart</p>
                 <!-- Example Item -->
-                <!--
-                            <div class="px-4 py-2 border-b flex justify-between items-center">
-                                <span class="text-sm text-gray-700">Product 1</span>
-                                <span class="text-xs text-gray-500">$15</span>
-                            </div>
-                            -->
+                
+                @forelse ($cartItems as $cartItem)
+                    <div class="px-4 py-2 border-b flex justify-between items-center">
+                        <span class="text-sm text-gray-700">{{$cartItem->product->title}}</span>
+                        <span class="text-xs text-gray-500">${{$cartItem->product->price}}</span>
+                    </div>
+                    
+                @empty
+                    <p class="px-4 py-2 text-gray-700 text-sm">No items in cart</p>
+                @endforelse
+
+                    
                 <div class="px-4 py-2 text-center">
-                    <a class="text-indigo-600 text-sm font-semibold hover:underline">View Cart</a>
+                    <a href="{{ route('cart') }}" class="text-indigo-600 text-sm font-semibold hover:underline">View Cart</a>
                 </div>
             </div>
         </div>
