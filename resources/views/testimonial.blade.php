@@ -58,7 +58,7 @@
                     <div class="bg-white rounded-xl shadow p-6 flex-shrink-0 w-80 flex flex-col items-center text-center">
                         <img src="{{ asset('storage/' . $latestReview->user->avatar) }}" 
                              alt="{{ $latestReview->user->name }}"
-                             class="w-20 h-20 rounded-full mb-4 object-cover">
+                             class="w-20 h-20 rounded-full mb-4 object-cover object-center">
 
                         <span class="text-yellow-500">{{ str_repeat('⭐', $latestReview->rating) }}</span>
 
@@ -90,10 +90,10 @@
                     <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
                  <img src="{{ asset('storage/' . $review->user->avatar) }}" 
                              alt="{{ $review->user->name }}"
-                             class="w-16 h-16 rounded-full mx-auto mb-4">
+                             class="w-16 h-16 rounded-full mx-auto mb-4 object-cover object-center">
                     <span class="text-yellow-500">{{ str_repeat('⭐', $review->rating) }}</span>
                 <p class="text-gray-600 italic mb-3">
-                    "Great service, fast delivery, and top-notch quality electronics!"
+                    {{$review->review}}
                 </p>
                 <h4 class="font-semibold text-blue-600">{{ $review->user->name }}</h4>
                 <span class="text-gray-400 text-sm">{{ $review->user->role ?? "User" }}</span>
@@ -114,64 +114,6 @@
         </div>
     </div>
 </section>
-
-
-
-
-    {{-- <!-- ALL TESTIMONIALS GRID -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-6 text-center mb-12">
-            <h3 class="text-3xl font-bold text-gray-800">More Customer Experiences</h3>
-            <p class="text-gray-600 mt-2">See why thousands trust GadgetSoko for electronics in Kenya.</p>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <!-- Testimonial -->
-            <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
-                 <img src="{{ asset('storage/' . $review->user->avatar) }}" 
-                             alt="{{ $review->user->name }}"
-                             class="w-16 h-16 rounded-full mx-auto mb-4">
-                    <span class="text-yellow-500">{{ str_repeat('⭐', $review->rating) }}</span>
-                <p class="text-gray-600 italic mb-3">
-                    "Great service, fast delivery, and top-notch quality electronics!"
-                </p>
-                <h4 class="font-semibold text-blue-600">{{ $review->user->name }}</h4>
-                <span class="text-gray-400 text-sm">{{ $review->user->role ?? "User" }}</span>
-                <p class="text-gray-500 text-sm mt-1">{{ $review->created_at->diffForHumans() }}</p>
-            </div>
-        </div>
-
-            <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
-                <img src="https://randomuser.me/api/portraits/men/77.jpg" alt="Customer"
-                    class="w-16 h-16 rounded-full mx-auto mb-4">
-                <p class="text-gray-600 italic mb-3">
-                   {{ $review->review }}
-                </p>
-                <h4 class="font-semibold text-blue-600">Brian K.</h4>
-                <span class="text-gray-400 text-sm">Gaming Buyer</span>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
-                <img src="https://randomuser.me/api/portraits/women/88.jpg" alt="Customer"
-                    class="w-16 h-16 rounded-full mx-auto mb-4">
-                <p class="text-gray-600 italic mb-3">
-                    "Highly recommend GadgetSoko! Excellent prices and reliable delivery."
-                </p>
-                <h4 class="font-semibold text-blue-600">Rachel N.</h4>
-                <span class="text-gray-400 text-sm">Smartwatch Buyer</span>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
-                <img src="https://randomuser.me/api/portraits/men/90.jpg" alt="Customer"
-                    class="w-16 h-16 rounded-full mx-auto mb-4">
-                <p class="text-gray-600 italic mb-3">
-                    "Fast shipping, great packaging, and quality gadgets. Love it!"
-                </p>
-                <h4 class="font-semibold text-blue-600">Kevin W.</h4>
-                <span class="text-gray-400 text-sm">Tablet Buyer</span>
-            </div>
-        </div>
-    </section> --}}
 
     <!-- CTA SECTION -->
     <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">

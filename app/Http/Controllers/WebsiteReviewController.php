@@ -13,7 +13,7 @@ class WebsiteReviewController extends Controller
     public function index()
     {
         $reviews = WebsiteReview::with('user')->latest()->get();
-        $latestReviews = WebsiteReview::with('user')->latest()->take(4)->get();
+        $latestReviews = WebsiteReview::with('user')->inRandomOrder()->take(4)->get();
         $avgRating = WebsiteReview::avg('rating');
         $totalReviews = WebsiteReview::count();
 

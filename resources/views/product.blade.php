@@ -18,15 +18,13 @@
 
     <div class="flex gap-20 items-center justify-between h-16">
         <!-- Search Bar -->
-        <div class="relative">
-            <input type="text" placeholder="Search..."
-                class="border border-gray-300 rounded-full pl-28 pr-96 py-2 text-xl font-serif focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-            {{-- <!-- Search Icon -->
-                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 16.65z" />
-                </svg> --}}
-        </div>
+        <form action="{{ route('products.search') }}" method="GET" class="mb-6 m-auto flex">
+            <input type="text" name="query" value="{{ request('query') }}" placeholder="Search products..."
+                class="w-full px-48 text-xl py-4 rounded-l border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit" class="px-4 py-4 bg-blue-600 text-white rounded-r hover:bg-blue-700">
+                Search
+            </button>
+        </form>
 
         <!-- Cart Dropdown -->
         <div x-data="{ open: false }" class="relative">
@@ -36,27 +34,29 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 7h13l-1.5-7M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                 </svg>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">{{ $quantity }}</span>
+                <span
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">{{ $quantity }}</span>
             </button>
 
             <!-- Dropdown Menu -->
             <div x-show="open" @click.away="open = false"
                 class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
                 <!-- Example Item -->
-                
+
                 @forelse ($cartItems as $cartItem)
                     <div class="px-4 py-2 border-b flex justify-between items-center">
-                        <span class="text-sm text-gray-700">{{$cartItem->product->title}}</span>
-                        <span class="text-xs text-gray-500">${{$cartItem->product->price}}</span>
+                        <span class="text-sm text-gray-700">{{ $cartItem->product->title }}</span>
+                        <span class="text-xs text-gray-500">${{ $cartItem->product->price }}</span>
                     </div>
-                    
+
                 @empty
                     <p class="px-4 py-2 text-gray-700 text-sm">No items in cart</p>
                 @endforelse
 
-                    
+
                 <div class="px-4 py-2 text-center">
-                    <a href="{{ route('cart') }}" class="text-indigo-600 text-sm font-semibold hover:underline">View Cart</a>
+                    <a href="{{ route('cart') }}" class="text-indigo-600 text-sm font-semibold hover:underline">View
+                        Cart</a>
                 </div>
             </div>
         </div>
@@ -73,31 +73,42 @@
         <div
             class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:justify-around md:items-center space-y-4 md:space-y-0">
             <!-- Category Filter -->
-            <div class="flex space-x-4 items-center">
-                <label for="category" class="font-semibold">Category:</label>
-                <select id="category"
-                    class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
-                    <option>All</option>
-                    <option>Phones</option>
-                    <option>Laptops</option>
-                    <option>Cameras</option>
-                    <option>Accessories</option>
-                    <option>Headphones</option>
-                </select>
-            </div>
+            <form action="{{ route('products.filter') }}" method="GET">
+                <div class="flex space-x-4 items-center">
+                    <label for="category" class="font-semibold mr-2">Category:</label>
+                    <select name="category" id="category" onchange="this.form.submit()"
+                        class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">All</option>
+                        <option value="Smartphone" {{ request('category') == 'Smartphone' ? 'selected' : '' }}>Smartphones
+                        </option>
+                        <option value="Laptops" {{ request('category') == 'Laptops' ? 'selected' : '' }}>Laptops</option>
+                        <option value="Cameras" {{ request('category') == 'Cameras' ? 'selected' : '' }}>Cameras</option>
+                        <option value="Accessories" {{ request('category') == 'Accessories' ? 'selected' : '' }}>
+                            Accessories</option>
+                        <option value="Headset" {{ request('category') == 'Headset' ? 'selected' : '' }}>Headset
+                        </option>
+                        <option value="TV" {{ request('category') == 'TV' ? 'selected' : '' }}>TVs
+                        </option>
+                    </select>
+                </div>
+            </form>
 
             <!-- Price Filter -->
-            <div class="flex space-x-4 items-center">
-                <label for="price" class="font-semibold">Price:</label>
-                <select id="price"
-                    class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
-                    <option>All</option>
-                    <option>Under $100</option>
-                    <option>$100 - $500</option>
-                    <option>$500 - $1000</option>
-                    <option>Above $1000</option>
-                </select>
-            </div>
+            <form action="{{ route('products.filter') }}" method="GET">
+                <div class="flex space-x-4 items-center">
+                    <label for="price" class="font-semibold">Price:</label>
+                    <select id="price" name="price" onchange="this.form.submit()"
+                        class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">All Prices</option>
+                        <option value="under100" {{ request('price') == 'under100' ? 'selected' : '' }}>Under $100</option>
+                        <option value="100-500" {{ request('price') == '100-500' ? 'selected' : '' }}>$100 - $500</option>
+                        <option value="500-1000" {{ request('price') == '500-1000' ? 'selected' : '' }}>$500 - $1000
+                        </option>
+                        <option value="over1000" {{ request('price') == 'over1000' ? 'selected' : '' }}>Over $1000
+                        </option>
+                    </select>
+                </div>
+            </form>
         </div>
     </section>
 @endsection

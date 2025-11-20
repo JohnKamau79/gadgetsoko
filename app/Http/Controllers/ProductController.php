@@ -74,4 +74,80 @@ class ProductController extends Controller
         $products = Product::where('category', 'smartphone')->get();
         return view('product', compact('products'));
     }
+
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $products = Product::where('title', 'like', "%{$query}%")
+                       ->orWhere('category', 'like', "%{$query}%")
+                       ->paginate(8);
+
+    $user = Auth::user();
+    $cartProductsIds = $user
+        ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
+        : [];
+
+    $quantity = $user
+        ? Cart::where('user_id', $user->id)->sum('quantity')
+        : 0;
+
+    $cartItems = $user
+        ? Cart::where('user_id', $user->id)->take(3)->get()
+        : collect();
+
+    return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
 }
+
+public function filter(Request $request) {
+    $category = $request->input('category');
+
+    $query = Product::query();
+
+    if($request->filled('category')){
+        if($category && $category != '') {
+        $query->where('category', $category);
+    }
+    }
+
+    $price = $request->input('price');
+
+    if($request->filled('price')){
+        if($price && $price != '') {
+        switch($request->price) {
+            case 'under100':
+                $query->where('price', '<', 100);
+                break;
+            case '100-500':
+                $query->where('price', [100, 500]);
+                break;
+            case '500-1000':
+                $query->where('price', [500, 1000]);
+                break;
+            case 'over1000':
+                $query->where('price', '>', 1000);
+                break;
+        }
+    }
+    }
+
+    $products = $query->orderBy('id', 'desc')->paginate(8);
+
+    $user = Auth::user();
+     $cartProductsIds = $user
+        ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
+        : [];
+
+    $quantity = $user
+        ? Cart::where('user_id', $user->id)->sum('quantity')
+        : 0;
+
+    $cartItems = $user
+        ? Cart::where('user_id', $user->id)->take(3)->get()
+        : collect();
+
+    return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
+}
+
+}
+

@@ -37,6 +37,8 @@ Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
 Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
     Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
 });
 
