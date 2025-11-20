@@ -67,4 +67,14 @@ class CartController extends Controller
 
         return view('cart', compact('quantity', 'cartItems'));
     }
+
+    public function checkout() {
+        $user = Auth::user();
+
+        $cartItems = Cart::where('user_id', $user->id)->with('product')->get();
+
+        $total = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+
+        return view('checkout', compact('cartItems', 'total'));
+    }
 }

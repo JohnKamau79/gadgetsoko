@@ -19,3 +19,6 @@ Route::middleware('auth')->group( function () {
 Route::middleware('auth')->group( function () {
     Route::delete('/cart/delete/{id}', [CartController::class, 'removeCartItem'])->name('cart.removeCartItem');
 });
+Route::middleware('auth')->group( function () {
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+});

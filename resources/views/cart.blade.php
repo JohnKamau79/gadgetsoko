@@ -69,9 +69,9 @@
                 Total: $ {{ number_format($cartItems->sum(fn($i) => $i->product->price * $i->quantity), 2) }}
             </h3>
 
-            <button class="mt-4 md:mt-0 px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700">
+            <a href="{{ route('checkout') }}" class="mt-4 md:mt-0 px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700">
                 Checkout
-            </button>
+            </a>
         </div>
     @endif
 
