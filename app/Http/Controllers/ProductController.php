@@ -31,7 +31,11 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('productdetails', compact('product', 'relatedProducts'));
+        $cartProductsIds = Cart::where('user_id', Auth::user()->id)
+                               ->pluck('product_id')
+                               ->toArray();
+
+        return view('productdetails', compact('product', 'relatedProducts', 'cartProductsIds'));
 
     }
     public function create()

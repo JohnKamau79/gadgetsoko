@@ -42,7 +42,7 @@
                     @csrf
                     <button type="submit"
                         class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Add to Cart
+                        {{ in_array($product->id, $cartProductsIds) ? 'Added' : 'Add to Cart' }}
                     </button>
                 </form>
 
