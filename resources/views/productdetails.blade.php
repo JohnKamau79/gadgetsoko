@@ -50,8 +50,10 @@
                     class="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition">
                     Back to Products
                 </a>
+            </div>
+            <div class="mt-6">
                 <a href="{{ route('cart') }}"
-                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                    class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
                     Cart
                 </a>
             </div>

@@ -56,3 +56,4 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/productReview.php';
 require __DIR__ . '/websiteReview.php';
 require __DIR__ . '/addToCart.php';
+require __DIR__ . '/checkout.php';
