@@ -4,6 +4,20 @@
 
 @section('content')
 
+{{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- HERO SECTION -->
     <section id="home" class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between py-20 px-6">

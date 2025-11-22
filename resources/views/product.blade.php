@@ -61,12 +61,6 @@
             </div>
         </div>
 
-        <div>
-            <a href={{ route('products.create') }}
-                class="inline-block bg-yellow-400 text-gray-900 font-bold px-6 py-3 rounded-lg shadow hover:bg-yellow-300 transition">
-                Create Post
-            </a>
-        </div>
     </div>
     <!-- FILTERS SECTION -->
     <section class=" my-3">
@@ -113,6 +107,21 @@
     </section>
 @endsection
 
+{{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    
 <!-- PRODUCTS GRID -->
 <section class="py-16 bg-gray-100">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

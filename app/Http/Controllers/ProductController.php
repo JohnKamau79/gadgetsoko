@@ -62,6 +62,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'category' => $request->category,
             'price' => $request->price,
+            'user_id'=> Auth::user()->id,
             'image' => $imagePath,
         ]);
 

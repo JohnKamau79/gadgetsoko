@@ -31,22 +31,28 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'firstName' => ['required', 'string', 'max:255'],
+            'lastName' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'role' => ['required', 'in:user,retailer,admin'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'avatar' => ['nullable','image','max:6048']
+            'avatar' => ['nullable', 'image', 'max:6048'],
         ]);
 
+        // Handle avatar upload
         $avatarPath = null;
-            if($request->hasFile('avatar')){
-                $avatarPath= $request->file('avatar')->store('products', 'public');
-            }
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
 
+        // Create the user
         $user = User::create([
-            'name' => $request->name,
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'role' => $request->role,
             'avatar' => $avatarPath,
+            'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
@@ -55,4 +61,5 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
+
 }

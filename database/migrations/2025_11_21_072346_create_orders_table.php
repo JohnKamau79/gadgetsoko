@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('city')->default('Nairobi');
             $table->string('phone');
             $table->decimal('total', 10,2);
+            $table->string('checkout_request_id')->nullable();
+            $table->string('mpesa_receipt_number')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });

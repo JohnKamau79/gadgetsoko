@@ -37,7 +37,7 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profile Avatar"
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{Auth::user()->firstName}}"
                                     class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
                             </div>
 
@@ -54,12 +54,12 @@
 
                     <x-slot name="content">
                         <x-dropdown-link>
-                            {{ Auth::User()->name }}
+                            {{ Auth::User()->firstName }} {{ Auth::user()->lastName }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('dashboard')">
+                        <x-dropdown-link :href="route('adminAll')">
                             {{ __('Dashboard') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> 
 
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
@@ -101,7 +101,7 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->firstName }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
@@ -126,7 +126,7 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link :href="route('adminAll')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
 

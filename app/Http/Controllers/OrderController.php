@@ -11,68 +11,105 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function checkout() {
+    public function checkout()
+    {
         $user = Auth::user();
         $cartItems = Cart::where('user_id', $user->id)->get();
-        $total = $cartItems->sum( fn($item) => $item->product->price * $item->quantity);
+        $total = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
 
         return view('checkout', compact('cartItems', 'total'));
 
     }
 
-    public function placeOrder(Request $request, MpesaService $mpesa ) {
-        $request->validate([
-            'city' => 'required|string',
-            'phone' => 'required|string',
-        ]);
+    public function placeOrder(Request $request, MpesaService $mpesa)
+{
+    $request->validate([
+        'city' => 'required|string',
+        'phone' => 'required|string',
+    ]);
 
-        $user = Auth::user();
-        $cartItems = Cart::where('user_id', $user->id)->get();
-        if($cartItems->isEmpty()) {
-            return redirect()->back()->with('error', 'Your cart is empty!');
+    $user = Auth::user();
+    $cartItems = Cart::where('user_id', $user->id)->get();
 
-        }
-
-        $order = Order::create([
-            'user_id'=>$user->id,
-            'name'=>$user->name,
-            'city'=>$request->city,
-            'phone'=>$request->phone,
-            'total'=>$cartItems->sum( fn($item) => $item->product->price * $item->quantity),
-            'status'=>'pending',
-        ]);
-
-        foreach($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-                'total' => $item->product->price * $item->quantity,
-            ]);
-        }
-
-        $mpesaResponse = $mpesa->stkPush($request->phone, $order->total, 'Order'.$order->id);
-
-        Cart::where('user_id', $user->id)->delete();
-
-        return redirect()->route('checkout')->with('success', 'STK Push initiated! Check your phone.')->with('mpesa', $mpesaResponse);
+    if ($cartItems->isEmpty()) {
+        return redirect()->back()->with('error', 'Your cart is empty!');
     }
 
-    public function mpesaCallBack(Request $request) {
+    // Create Order
+    $order = Order::create([
+        'user_id' => $user->id,
+        'name' => $user->firstName,
+        'city' => $request->city,
+        'phone' => $request->phone,
+        'total' => $cartItems->sum(fn($item) => $item->product->price * $item->quantity),
+        'status' => 'pending',
+    ]);
+
+    // Create Order Items
+    foreach ($cartItems as $item) {
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $item->product_id,
+            'quantity' => $item->quantity,
+            'price' => $item->product->price,
+            'total' => $item->product->price * $item->quantity,
+        ]);
+    }
+
+    // STK Push
+    $mpesaResponse = $mpesa->stkPush($request->phone, $order->total, 'Order_'.$order->id);
+
+    // Save CheckoutRequestID
+    if (isset($mpesaResponse['CheckoutRequestID'])) {
+        $order->checkout_request_id = $mpesaResponse['CheckoutRequestID'];
+        $order->save();
+    }
+
+    // Clear Cart
+    Cart::where('user_id', $user->id)->delete();
+
+    return redirect()->route('checkout')
+        ->with('success', 'STK Push initiated! Check your phone.')
+        ->with('mpesa', $mpesaResponse);
+}
+
+
+    public function mpesaCallback(Request $request)
+    {
         $data = $request->all();
 
-        $checkoutRequestID = $data['Body']['stkCallBack']['CheckoutRequestID'] ?? null;
-        $resultCode  =$data['Body']['stkCallBack']['ResultCode'] ?? 1;;
+        // Correct key name
+        $callback = $data['Body']['stkCallback'];
 
-        $orderItem = Order::where('reference', $checkoutRequestID)->first();
+        $checkoutRequestID = $callback['CheckoutRequestID'] ?? null;
+        $resultCode = $callback['ResultCode'] ?? 1;
 
-        if($orderItem) {
-            $orderItem->status = ($resultCode == 0) ? 'paid'  : 'failed';
-            $orderItem->save();
+        // Find correct order
+        $order = Order::where('checkout_request_id', $checkoutRequestID)->first();
 
-        return response()->json(['message' => 'Callback received']);
+        if (!$order) {
+            return response()->json(['error' => 'Order not found'], 404);
         }
+
+        if ($resultCode == 0) {
+            // SUCCESS
+            $order->status = 'paid';
+
+            // Extract receipt
+            foreach ($callback['CallbackMetadata']['Item'] as $item) {
+                if ($item['Name'] == 'MpesaReceiptNumber') {
+                    $order->mpesa_receipt_number = $item['Value'];
+                }
+            }
+        } else {
+            // FAILED
+            $order->status = 'failed';
+        }
+
+        $order->save();
+
+        return response()->json(['message' => 'Callback processed']);
     }
+
 
 }

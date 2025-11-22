@@ -3,7 +3,7 @@
 @section('content')
 @section('header')
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Profile') }} : {{ Auth::user()->name }}
+        {{ __('Profile') }} : {{ Auth::user()->firstName }} {{ Auth::user()->lastName }}
     </h2>
 @endsection
 

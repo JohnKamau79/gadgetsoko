@@ -4,6 +4,20 @@
 
 @section('content')
 
+{{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- PRODUCT DETAILS -->
 <section class="max-w-4xl mx-auto my-16 bg-white p-8 rounded-lg shadow-md">
     <div class="flex flex-col md:flex-row gap-8">
@@ -89,7 +103,7 @@
 
 @forelse($product->reviews ?? [] as $review)
     <div class="border-b py-4">
-        <p class="font-semibold">{{ $review->user->name }}</p>
+        <p class="font-semibold">{{ $review->user->firstName }}</p>
         <p>
             Rating:
             <span class="text-yellow-500">

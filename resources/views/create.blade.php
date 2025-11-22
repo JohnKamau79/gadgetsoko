@@ -4,6 +4,21 @@
 
 @section('content')
 
+
+{{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- FORM -->
     <section class="max-w-3xl mx-auto mt-16 bg-white p-8 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Add New Product</h2>

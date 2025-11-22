@@ -4,6 +4,21 @@
 
 @section('content')
 
+
+{{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- HERO SECTION -->
     <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-4">What Our Customers Say</h2>
@@ -57,14 +72,14 @@
                 @forelse ($latestReviews as $latestReview)
                     <div class="bg-white rounded-xl shadow p-6 flex-shrink-0 w-80 flex flex-col items-center text-center">
                         <img src="{{ asset('storage/' . $latestReview->user->avatar) }}" 
-                             alt="{{ $latestReview->user->name }}"
+                             alt="{{ $latestReview->user->firstName }}"
                              class="w-20 h-20 rounded-full mb-4 object-cover object-center">
 
                         <span class="text-yellow-500">{{ str_repeat('⭐', $latestReview->rating) }}</span>
 
                         <p class="text-gray-600 italic mb-4">{{ $latestReview->review }}</p>
 
-                        <h4 class="font-semibold text-blue-600">{{ $latestReview->user->name }}</h4>
+                        <h4 class="font-semibold text-blue-600">{{ $latestReview->user->firstName }}</h4>
                         <span class="text-gray-400 text-sm">{{ $latestReview->user->role ?? 'User' }}</span>
                         <p class="text-gray-500 text-sm mt-1">{{ $latestReview->created_at->diffForHumans() }}</p>
                     </div>
@@ -95,7 +110,7 @@
                 <p class="text-gray-600 italic mb-3">
                     {{$review->review}}
                 </p>
-                <h4 class="font-semibold text-blue-600">{{ $review->user->name }}</h4>
+                <h4 class="font-semibold text-blue-600">{{ $review->user->firstName }}</h4>
                 <span class="text-gray-400 text-sm">{{ $review->user->role ?? "User" }}</span>
                 <p class="text-gray-500 text-sm mt-1">{{ $review->created_at->diffForHumans() }}</p>
             </div>

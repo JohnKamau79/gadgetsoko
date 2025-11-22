@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,13 +23,17 @@ Route::get('/', function () {
 // Pages Routes
 Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
     Route::get('home', function () {
-        return view('home'); })->name('home');
+        return view('home');
+    })->name('home');
     Route::get('about', function () {
-        return view('about'); })->name('about');
+        return view('about');
+    })->name('about');
     Route::get('testimonial', function () {
-        return view('testimonial'); })->name('testimonial');
+        return view('testimonial');
+    })->name('testimonial');
     Route::get('contact', function () {
-        return view('contact'); })->name('contact');
+        return view('contact');
+    })->name('contact');
     Route::get('product', [ProductController::class, 'index'])->name('product');
     // Route::get('cart', function () {
     //     return view('cart');})->name('cart');
@@ -42,9 +48,35 @@ Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('adminAll');
+
+Route::delete('/admin/users/{id}', [AdminController::class, 'removeUser'])->name('admin.users.destroy');
+
+// Route::prefix('/dashboard')->middleware(['auth', 'verified'])->group(function () {
+
+//     Route::get('/adminUsers', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminRetailers', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminAdmins', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminProducts', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminWebsiteReviews', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminProductReviews', function () {
+//         return view('contact');
+//     })->name('contact');
+//     Route::get('/adminProducts', function () {
+//         return view('contact');
+//     })->name('contact');
+// });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
