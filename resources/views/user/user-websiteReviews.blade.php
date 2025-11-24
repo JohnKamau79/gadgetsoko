@@ -12,6 +12,7 @@
                     <th class="text-left p-3">Rating</th>
                     <th class="text-left p-3">Review</th>
                     <th class="text-left p-3">Date</th>
+                    <th class="text-left p-3">Action</th>
                 </tr>
             </thead>
 
@@ -21,6 +22,17 @@
                         <td class="p-3">{{ $review->rating }}/5</td>
                         <td class="p-3">{{ $review->review }}</td>
                         <td class="p-3">{{ $review->created_at->format('Y-m-d') }}</td>
+                        <td class="p-3">
+                            <form action="#" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button 
+                                    onclick="return confirm('Remove this review?')"
+                                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                    Delete Review
+                                </button>
+                            </form>
+                        </td>
                     </tr>
 
                 @empty

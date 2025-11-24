@@ -57,7 +57,7 @@
                             {{ Auth::User()->firstName }} {{ Auth::user()->lastName }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('adminAll')">
+                        <x-dropdown-link :href="route('dashboard')">
                             {{ __('Dashboard') }}
                         </x-dropdown-link> 
 
@@ -126,7 +126,7 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('adminAll')" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductReviewController extends Controller
 {
@@ -22,5 +23,15 @@ class ProductReviewController extends Controller
         ]);
 
         return back()->with('success', 'Product review added!');
+    }
+
+    public function delete(ProductReview $productReview ) {
+        if($productReview->user_id !== auth()->id() && Auth::user()->role !== 'admin'){
+            abort(403, 'Unauthorised action.');
+        }
+
+        $productReview->delete();
+
+        return redirect()->back()->with('success', 'Review deleted successfully');
     }
 }

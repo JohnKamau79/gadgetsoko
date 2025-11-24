@@ -1,6 +1,6 @@
-@extends('admin.admin-dashboard')
+@extends('retailer.retailer-dashboard')
 
-@section('adminDashboardContent')
+@section('retailerDashboardContent')
     <div class="p-6">
 
         <h1 class="text-3xl font-bold mb-6 text-blue-700">Products Management</h1>
@@ -26,31 +26,34 @@
                         <th class="text-left p-3">Name</th>
                         <th class="text-left p-3">Price</th>
                         <th class="text-left p-3">Stock</th>
-                        <th class="text-left p-3">Retailer</th>
                         <th class="text-left p-3">Added On</th>
                         <th class="text-left p-3">Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($adminProducts as $product)
+                    @forelse ($retailerProducts as $product)
                         <tr class="border-b">
                             <td class="p-3">{{ $product->title }}</td>
                             <td class="p-3">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3">{{ $product->quantity ?? 'N/A' }}</td>
-                            <td class="p-3">{{ $product->user_id}}</td>
                             <td class="p-3">{{ $product->created_at->format('Y-m-d') }}</td>
 
                             <td class="p-3 flex gap-2">
 
 
+                                {{-- Edit Button --}}
+                                    <a href="{{ route('products.edit', $product) }}"
+                                        class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                                        Edit
+                                    </a>
                                 {{-- Delete Button --}}
                                 <form action="{{ route('products.delete', $product) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Remove this product?')"
                                         class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                                        Remove Product
+                                        Delete
                                     </button>
                                 </form>
                             </td>

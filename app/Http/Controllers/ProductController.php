@@ -32,8 +32,8 @@ class ProductController extends Controller
             ->get();
 
         $cartProductsIds = Cart::where('user_id', Auth::user()->id)
-                               ->pluck('product_id')
-                               ->toArray();
+            ->pluck('product_id')
+            ->toArray();
 
         return view('productdetails', compact('product', 'relatedProducts', 'cartProductsIds'));
 
@@ -41,6 +41,66 @@ class ProductController extends Controller
     public function create()
     {
         return view('create');
+    }
+
+    public function edit(Product $product)
+    {
+        if ($product->user_id !== Auth::user()->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('retailer.product-edit', compact('product'));
+    }
+
+    public function update(Product $product, Request $request)
+    {
+        if ($product->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $request->validate([
+            'title' => 'required',
+            'category' => 'nullable',
+            'description' => 'nullable',
+            'price' => 'required|numeric',
+            'image' => 'nullable|image'
+        ]);
+
+        $product->update([
+            'title' => $request->title,
+            'category' => $request->category,
+            'description' => $request->description,
+            'price' => $request->price,
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($product->image && file_exists(storage_path('app/public/' . $product->image))) {
+                unlink(storage_path('app/public/' . $product->image));
+            }
+
+            $path = $request->file('image')->store('products', 'public');
+
+            $product->image = $path;
+            $product->save();
+        }
+
+        return redirect()->route('dashboard', ['page' => 'products'])
+            ->with('success', 'Product updated successfully');
+    }
+
+    public function delete(Product $product)
+    {
+        if ($product->user_id !== auth()->id() && Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        if ($product->image && file_exists(storage_path('app/public/' . $product->image))) {
+            unlink(storage_path('app/public/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect('dashboard?page=products')->with('success', 'Product has been deleted successfully');
     }
 
     public function store(Request $request)
@@ -62,7 +122,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'category' => $request->category,
             'price' => $request->price,
-            'user_id'=> Auth::user()->id,
+            'user_id' => Auth::user()->id,
             'image' => $imagePath,
         ]);
 
@@ -77,78 +137,79 @@ class ProductController extends Controller
     }
 
     public function search(Request $request)
-{
-    $query = $request->input('query');
+    {
+        $query = $request->input('query');
 
-    $products = Product::where('title', 'like', "%{$query}%")
-                       ->orWhere('category', 'like', "%{$query}%")
-                       ->paginate(8);
+        $products = Product::where('title', 'like', "%{$query}%")
+            ->orWhere('category', 'like', "%{$query}%")
+            ->paginate(8);
 
-    $user = Auth::user();
-    $cartProductsIds = $user
-        ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
-        : [];
+        $user = Auth::user();
+        $cartProductsIds = $user
+            ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
+            : [];
 
-    $quantity = $user
-        ? Cart::where('user_id', $user->id)->sum('quantity')
-        : 0;
+        $quantity = $user
+            ? Cart::where('user_id', $user->id)->sum('quantity')
+            : 0;
 
-    $cartItems = $user
-        ? Cart::where('user_id', $user->id)->take(3)->get()
-        : collect();
+        $cartItems = $user
+            ? Cart::where('user_id', $user->id)->take(3)->get()
+            : collect();
 
-    return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
-}
-
-public function filter(Request $request) {
-    $category = $request->input('category');
-
-    $query = Product::query();
-
-    if($request->filled('category')){
-        if($category && $category != '') {
-        $query->where('category', $category);
-    }
+        return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
     }
 
-    $price = $request->input('price');
+    public function filter(Request $request)
+    {
+        $category = $request->input('category');
 
-    if($request->filled('price')){
-        if($price && $price != '') {
-        switch($request->price) {
-            case 'under100':
-                $query->where('price', '<', 100);
-                break;
-            case '100-500':
-                $query->where('price', [100, 500]);
-                break;
-            case '500-1000':
-                $query->where('price', [500, 1000]);
-                break;
-            case 'over1000':
-                $query->where('price', '>', 1000);
-                break;
+        $query = Product::query();
+
+        if ($request->filled('category')) {
+            if ($category && $category != '') {
+                $query->where('category', $category);
+            }
         }
+
+        $price = $request->input('price');
+
+        if ($request->filled('price')) {
+            if ($price && $price != '') {
+                switch ($request->price) {
+                    case 'under100':
+                        $query->where('price', '<', 100);
+                        break;
+                    case '100-500':
+                        $query->where('price', [100, 500]);
+                        break;
+                    case '500-1000':
+                        $query->where('price', [500, 1000]);
+                        break;
+                    case 'over1000':
+                        $query->where('price', '>', 1000);
+                        break;
+                }
+            }
+        }
+
+        $products = $query->orderBy('id', 'desc')->paginate(8);
+
+        $user = Auth::user();
+        $cartProductsIds = $user
+            ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
+            : [];
+
+        $quantity = $user
+            ? Cart::where('user_id', $user->id)->sum('quantity')
+            : 0;
+
+        $cartItems = $user
+            ? Cart::where('user_id', $user->id)->take(3)->get()
+            : collect();
+
+        return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
     }
-    }
-
-    $products = $query->orderBy('id', 'desc')->paginate(8);
-
-    $user = Auth::user();
-     $cartProductsIds = $user
-        ? Cart::where('user_id', $user->id)->pluck('product_id')->toArray()
-        : [];
-
-    $quantity = $user
-        ? Cart::where('user_id', $user->id)->sum('quantity')
-        : 0;
-
-    $cartItems = $user
-        ? Cart::where('user_id', $user->id)->take(3)->get()
-        : collect();
-
-    return view('product', compact('products', 'cartProductsIds', 'cartItems', 'quantity'));
-}
 
 }
 

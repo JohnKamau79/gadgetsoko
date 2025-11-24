@@ -98,25 +98,30 @@ class DashboardController extends Controller
                 'retailerProducts' => Product::where('user_id', $user->id)->with('user')->get(),
                 'totalRetailerProducts' => Product::where('user_id', $user->id)->with('user')->count(),
 
-                'retailerOrders' => Order::with('user')->get(),
-                'totalRetailerOrders' => Order::count(),
+                'retailerOrders' => Order::whereHas('orderItems.product', function ($q) {
+                    $q->where('user_id', auth()->id());
+                })
+                    ->with(['orderItems.product'])
+                    ->get()
+                ,
 
-                'retailerProductReviews' => ProductReview::all(),
-                'totalRetailerProductReviews' => ProductReview::count(),
+                'totalRetailerOrders'=> Order::whereHas('orderItems.product', function ($q) {
+                    $q->where('user_id', auth()->id());
+                })
+                    ->with(['orderItems.product'])
+                    ->count()
+                ,
+
+                'retailerProductReviews' => Auth::user()->products()->with('reviews.user')->get(),
+                'totalRetailerProductReviews' => Auth::user()->products()->withCount('reviews')->get()->sum('reviews_count'),
             ]);
 
             // Determine which retailer page to load
             $page = $request->query('page', 'all'); // default = 'all'
 
             switch ($page) {
-                case 'retailers':
-                    return view('retailer.retailer-retailers', $retailerData);
-                case 'users':
-                    return view('retailer.retailer-users', $retailerData);
                 case 'products':
                     return view('retailer.retailer-products', $retailerData);
-                case 'websiteReviews':
-                    return view('retailer.retailer-websiteReviews', $retailerData);
                 case 'productReviews':
                     return view('retailer.retailer-productReviews', $retailerData);
                 case 'orders':
@@ -128,7 +133,7 @@ class DashboardController extends Controller
         }
 
         // ===== NORMAL USER DASHBOARD =====
-        if($user->role === 'user') {
+        if ($user->role === 'user') {
 
             $page = $request->query('page', 'all'); // default = 'all'
 

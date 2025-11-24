@@ -45,10 +45,13 @@ Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () 
     Route::post('/', [ProductController::class, 'store'])->name('products.store');
     Route::get('/search', [ProductController::class, 'search'])->name('products.search');
     Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
+    Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
+    Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('adminAll');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::delete('/admin/users/{id}', [AdminController::class, 'removeUser'])->name('admin.users.destroy');
 
