@@ -15,7 +15,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'User not found!');
         }
 
-        if($user->id === Auth::user()->id) {
+        if($user->id == Auth::user()->id) {
             return redirect()->back()->with('error', 'You cannot delete yourself!');
         }
         $user->delete();
@@ -24,3 +24,4 @@ class AdminController extends Controller
 
     }
 }
+ 

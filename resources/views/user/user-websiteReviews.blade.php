@@ -1,50 +1,61 @@
 @extends('user.user-dashboard')
 
 @section('userDashboardContent')
+    {{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<div class="p-6">
-    <h1 class="text-3xl font-bold mb-6 text-blue-700">My Website Reviews</h1>
+    {{-- ERROR MESSAGE --}}
+    @if (session('error'))
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
 
-    <div class="bg-white shadow-lg rounded p-6">
-        <table class="w-full border-collapse">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="text-left p-3">Rating</th>
-                    <th class="text-left p-3">Review</th>
-                    <th class="text-left p-3">Date</th>
-                    <th class="text-left p-3">Action</th>
-                </tr>
-            </thead>
+    <div class="p-6">
+        <h1 class="text-3xl font-bold mb-6 text-blue-700">My Website Reviews</h1>
 
-            <tbody>
-                @forelse ($websiteReviews as $review)
-                    <tr class="border-b">
-                        <td class="p-3">{{ $review->rating }}/5</td>
-                        <td class="p-3">{{ $review->review }}</td>
-                        <td class="p-3">{{ $review->created_at->format('Y-m-d') }}</td>
-                        <td class="p-3">
-                            <form action="#" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button 
-                                    onclick="return confirm('Remove this review?')"
-                                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                                    Delete Review
-                                </button>
-                            </form>
-                        </td>
+        <div class="bg-white shadow-lg rounded p-6">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="text-left p-3">Rating</th>
+                        <th class="text-left p-3">Review</th>
+                        <th class="text-left p-3">Date</th>
+                        <th class="text-left p-3">Action</th>
                     </tr>
+                </thead>
 
-                @empty
-                    <tr>
-                        <td colspan="3" class="p-3 text-center text-gray-500">
-                            You have not created any website reviews yet.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                <tbody>
+                    @forelse ($websiteReviews as $review)
+                        <tr class="border-b">
+                            <td class="p-3">{{ $review->rating }}/5</td>
+                            <td class="p-3">{{ $review->review }}</td>
+                            <td class="p-3">{{ $review->created_at->format('Y-m-d') }}</td>
+                            <td class="p-3">
+                                <form action="{{ route('websiteReview.delete', $review->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Remove this review?')"
+                                        class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                        Delete Review
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                    @empty
+                        <tr>
+                            <td colspan="3" class="p-3 text-center text-gray-500">
+                                You have not created any website reviews yet.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
 @endsection

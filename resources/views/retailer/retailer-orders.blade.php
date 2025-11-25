@@ -17,9 +17,9 @@
                         <th class="text-left p-3">Date</th>
                     </tr>
                 </thead>
-
+                
                 <tbody>
-                    @forelse ($orders as $order)
+                    @forelse ($retailerOrders as $order)
                         @foreach ($order->orderItems as $item)
                             <tr class="border-b">
                                 <td class="p-3">{{ $order->id }}</td>

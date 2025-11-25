@@ -38,7 +38,7 @@
                             <td class="p-3">{{ $product->title }}</td>
                             <td class="p-3">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3">{{ $product->quantity ?? 'N/A' }}</td>
-                            <td class="p-3">{{ $product->user_id}}</td>
+                            <td class="p-3">{{ $product->user_id }}</td>
                             <td class="p-3">{{ $product->created_at->format('Y-m-d') }}</td>
 
                             <td class="p-3 flex gap-2">

@@ -41,19 +41,24 @@ Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
 
 // Products Routes
 Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/', [ProductController::class, 'store'])->name('products.store');
     Route::get('/search', [ProductController::class, 'search'])->name('products.search');
     Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
+});
+Route::prefix('/products')->middleware(['auth', 'verified', 'retailer'])->group(function () {
+    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
     Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
+});
+
+Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/{id}', [ProductController::class, 'show'])->name('productdetails');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::delete('/admin/users/{id}', [AdminController::class, 'removeUser'])->name('admin.users.destroy');
+Route::delete('/admin/users/{id}', action: [AdminController::class, 'removeUser'])->middleware('admin')->name('admin.users.destroy');
 
 // Route::prefix('/dashboard')->middleware(['auth', 'verified'])->group(function () {
 

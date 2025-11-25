@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WebsiteReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WebsiteReviewController extends Controller
 {
@@ -20,13 +21,7 @@ class WebsiteReviewController extends Controller
         return view('testimonial', compact('reviews','avgRating', 'totalReviews', 'latestReviews'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -74,8 +69,13 @@ class WebsiteReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function delete(WebsiteReview $websiteReview ) {
+        if($websiteReview->user_id !== auth()->id() && Auth::user()->role !== 'admin'){
+            abort(403, 'Unauthorised action.');
+        }
+
+        $websiteReview->delete();
+
+        return redirect()->back()->with('success', 'Review deleted successfully');
     }
 }

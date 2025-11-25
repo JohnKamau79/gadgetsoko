@@ -68,7 +68,9 @@ class DashboardController extends Controller
 
             // Determine which admin page to load
             $page = $request->query('page', 'all'); // default = 'all'
-
+            if (Auth::user()->role !== 'admin') {
+                abort(403, 'Unauthorized access.');
+            }
             switch ($page) {
                 case 'retailers':
                     return view('admin.admin-retailers', $adminData);
@@ -105,7 +107,7 @@ class DashboardController extends Controller
                     ->get()
                 ,
 
-                'totalRetailerOrders'=> Order::whereHas('orderItems.product', function ($q) {
+                'totalRetailerOrders' => Order::whereHas('orderItems.product', function ($q) {
                     $q->where('user_id', auth()->id());
                 })
                     ->with(['orderItems.product'])
@@ -118,6 +120,10 @@ class DashboardController extends Controller
 
             // Determine which retailer page to load
             $page = $request->query('page', 'all'); // default = 'all'
+
+            if (Auth::user()->role !== 'retailer') {
+                abort(403, 'Unauthorized access.');
+            }
 
             switch ($page) {
                 case 'products':
@@ -132,10 +138,14 @@ class DashboardController extends Controller
             }
         }
 
-        // ===== NORMAL USER DASHBOARD =====
+        // ===== NORMAL USER DASHBOARD ======
         if ($user->role === 'user') {
 
             $page = $request->query('page', 'all'); // default = 'all'
+
+            if (Auth::user()->role !== 'user') {
+                abort(403, 'Unauthorized access.');
+            }
 
             switch ($page) {
                 case 'websiteReviews':
