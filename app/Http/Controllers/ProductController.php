@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\WebsiteReview;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,21 @@ class ProductController extends Controller
         $quantity = $cartItems->sum('quantity');
 
         return view('product', compact('products', 'cartItems', 'quantity'));
+    }
+    public function homeIndex()
+    {
+        $products = Product::orderBy('id', 'desc')->paginate(4);
+
+        $user = Auth::user();
+        $cartItems = Cart::where('user_id', $user->id)->take(3)->orderBy('id', 'desc')->get();
+        $allCartItems = Cart::where('user_id', $user->id)->get();
+        $quantity = $cartItems->sum('quantity');
+
+
+        $reviews = WebsiteReview::with('user')->latest()->get();
+        $latestReviews = WebsiteReview::with('user')->inRandomOrder()->take(4)->get();
+
+        return view('home', compact('products', 'cartItems', 'quantity', 'reviews', 'latestReviews'));
     }
 
     public function show($id)
@@ -38,6 +54,23 @@ class ProductController extends Controller
         return view('productdetails', compact('product', 'relatedProducts', 'cartProductsIds'));
 
     }
+    // public function showHome($id)
+    // {
+    //     // $product = Product::findOrFail($id);
+    //     $product = Product::with('reviews.user')->findOrFail($id);
+
+    //     $relatedProducts = Product::where('category', $product->category)
+    //         ->where('id', '!=', $product->id)
+    //         ->take(4)
+    //         ->get();
+
+    //     $cartProductsIds = Cart::where('user_id', Auth::user()->id)
+    //         ->pluck('product_id')
+    //         ->toArray();
+
+    //     return view('home', compact('product', 'relatedProducts', 'cartProductsIds'));
+
+    // }
     public function create()
     {
         return view('create');

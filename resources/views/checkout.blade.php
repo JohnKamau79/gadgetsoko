@@ -4,22 +4,20 @@
 
 @section('content')
     <div class="max-w-4xl mx-auto my-12 bg-white p-6 rounded-lg shadow">
-
-        <h2 class="text-2xl font-semibold mb-6">Checkout</h2>
-
         {{-- SUCCESS MESSAGE --}}
-    @if (session('success'))
-        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if (session('success'))
+            <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    {{-- ERROR MESSAGE --}}
-    @if (session('error'))
-        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
+        {{-- ERROR MESSAGE --}}
+        @if (session('error'))
+            <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+        <h2 class="text-2xl font-semibold mb-6">Checkout</h2>
 
         @if ($cartItems->isEmpty())
             <p class="text-gray-600">Your cart is empty.</p>

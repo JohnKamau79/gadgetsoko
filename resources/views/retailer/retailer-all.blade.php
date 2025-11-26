@@ -15,9 +15,4 @@
             <p class="text-2xl font-bold text-blue-800">{{$totalRetailerProductReviews}}</p>
         </div>
     </div>
-
-    {{-- Placeholder for additional content --}}
-    <div class="bg-gray-50 p-6 rounded shadow">
-        <p class="text-gray-600">Additional dashboard content or charts can go here.</p>
-    </div>
 @endsection

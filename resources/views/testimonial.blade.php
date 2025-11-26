@@ -5,16 +5,18 @@
 @section('content')
 
 
-{{-- SUCCESS MESSAGE --}}
+    {{-- SUCCESS MESSAGE --}}
     @if (session('success'))
-        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+        <div class="bg-green-200 text-green-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+            x-init="setTimeout(() => show = false, 4000)">
             {{ session('success') }}
         </div>
     @endif
 
     {{-- ERROR MESSAGE --}}
     @if (session('error'))
-        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+        <div class="bg-red-200 text-red-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+            x-init="setTimeout(() => show = false, 4000)">
             {{ session('error') }}
         </div>
     @endif
@@ -62,35 +64,36 @@
 
 
     <!-- FEATURED TESTIMONIALS -->
-<section class="py-16 bg-white relative">
-    <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">User Reviews</h2>
+    <section class="py-16 bg-white relative">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">User Reviews</h2>
 
-        <!-- Scrollable container -->
-        <div class="relative">
-            <div class="flex space-x-6 pb-4">
-                @forelse ($latestReviews as $latestReview)
-                    <div class="bg-white rounded-xl shadow p-6 flex-shrink-0 w-80 flex flex-col items-center text-center">
-                        <img src="{{ asset('storage/' . $latestReview->user->avatar) }}" 
-                             alt="{{ $latestReview->user->firstName }}"
-                             class="w-20 h-20 rounded-full mb-4 object-cover object-center">
+            <!-- Scrollable container -->
+            <div class="relative">
+                <div class="flex space-x-6 pb-4">
+                    @forelse ($latestReviews as $latestReview)
+                        <div
+                            class="bg-white rounded-xl shadow p-6 flex-shrink-0 w-80 flex flex-col items-center text-center">
+                            <img src="{{ asset('storage/' . $latestReview->user->avatar) }}"
+                                alt="{{ $latestReview->user->firstName }}"
+                                class="w-20 h-20 rounded-full mb-4 object-cover object-center">
 
-                        <span class="text-yellow-500">{{ str_repeat('⭐', $latestReview->rating) }}</span>
+                            <span class="text-yellow-500">{{ str_repeat('⭐', $latestReview->rating) }}</span>
 
-                        <p class="text-gray-600 italic mb-4">{{ $latestReview->review }}</p>
+                            <p class="text-gray-600 italic mb-4">{{ $latestReview->review }}</p>
 
-                        <h4 class="font-semibold text-blue-600">{{ $latestReview->user->firstName }}</h4>
-                        <span class="text-gray-400 text-sm">{{ $latestReview->user->role ?? 'User' }}</span>
-                        <p class="text-gray-500 text-sm mt-1">{{ $latestReview->created_at->diffForHumans() }}</p>
-                    </div>
-                @empty
-                    <p class="text-gray-500">No reviews yet. Be the first to review!</p>
-                @endforelse
+                            <h4 class="font-semibold text-blue-600">{{ $latestReview->user->firstName }}</h4>
+                            <span class="text-gray-400 text-sm">{{ $latestReview->user->role ?? 'User' }}</span>
+                            <p class="text-gray-500 text-sm mt-1">{{ $latestReview->created_at->diffForHumans() }}</p>
+                        </div>
+                    @empty
+                        <p class="text-gray-500">No reviews yet. Be the first to review!</p>
+                    @endforelse
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="py-16 bg-gray-100 relative">
+    </section>
+    <section class="py-16 bg-gray-100 relative">
         <div class="max-w-7xl mx-auto px-6 text-center mb-12">
             <h3 class="text-3xl font-bold text-gray-800">More Customer Experiences</h3>
             <p class="text-gray-600 mt-2">See why thousands trust GadgetSoko for electronics in Kenya.</p>
@@ -100,35 +103,39 @@
 
         <!-- Scrollable container -->
         <div class="relative">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 scrollbar-hide scroll-smooth" id="reviewsContainer">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 scrollbar-hide scroll-smooth"
+                id="reviewsContainer">
                 @forelse ($reviews as $review)
                     <div class="bg-gray-50 rounded-xl shadow p-6 text-center">
-                 <img src="{{ asset('storage/' . $review->user->avatar) }}" 
-                             alt="{{ $review->user->name }}"
-                             class="w-16 h-16 rounded-full mx-auto mb-4 object-cover object-center">
-                    <span class="text-yellow-500">{{ str_repeat('⭐', $review->rating) }}</span>
-                <p class="text-gray-600 italic mb-3">
-                    {{$review->review}}
-                </p>
-                <h4 class="font-semibold text-blue-600">{{ $review->user->firstName }}</h4>
-                <span class="text-gray-400 text-sm">{{ $review->user->role ?? "User" }}</span>
-                <p class="text-gray-500 text-sm mt-1">{{ $review->created_at->diffForHumans() }}</p>
-            </div>
+                        <img src="{{ asset('storage/' . $review->user->avatar) }}" alt="{{ $review->user->name }}"
+                            class="w-16 h-16 rounded-full mx-auto mb-4 object-cover object-center">
+                        <span class="text-yellow-500">{{ str_repeat('⭐', $review->rating) }}</span>
+                        <p class="text-gray-600 italic mb-3">
+                            {{ $review->review }}
+                        </p>
+                        <h4 class="font-semibold text-blue-600">{{ $review->user->firstName }}</h4>
+                        <span class="text-gray-400 text-sm">{{ $review->user->role ?? 'User' }}</span>
+                        <p class="text-gray-500 text-sm mt-1">{{ $review->created_at->diffForHumans() }}</p>
+                    </div>
                 @empty
                     <p class="text-gray-500">No reviews yet. Be the first to review!</p>
                 @endforelse
             </div>
 
             <!-- Scroll buttons -->
-            <button class="hidden md:flex absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-gray-100" onclick="document.getElementById('reviewsContainer').scrollBy({ left: -300, behavior: 'smooth' })">
+            <button
+                class="hidden md:flex absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-gray-100"
+                onclick="document.getElementById('reviewsContainer').scrollBy({ left: -300, behavior: 'smooth' })">
                 &#x276E; <!-- left arrow -->
             </button>
-            <button class="hidden md:flex absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-gray-100" onclick="document.getElementById('reviewsContainer').scrollBy({ left: 300, behavior: 'smooth' })">
+            <button
+                class="hidden md:flex absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-gray-100"
+                onclick="document.getElementById('reviewsContainer').scrollBy({ left: 300, behavior: 'smooth' })">
                 &#x276F; <!-- right arrow -->
             </button>
         </div>
-    </div>
-</section>
+        </div>
+    </section>
 
     <!-- CTA SECTION -->
     <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">

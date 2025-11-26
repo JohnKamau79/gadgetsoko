@@ -57,12 +57,16 @@ class OrderController extends Controller
     }
 
     // STK Push
-    $mpesaResponse = $mpesa->stkPush($request->phone, $order->total, 'Order_'.$order->id);
+    try {
+        $mpesaResponse = $mpesa->stkPush($request->phone, $order->total, 'Order_'.$order->id);
 
     // Save CheckoutRequestID
     if (isset($mpesaResponse['CheckoutRequestID'])) {
         $order->checkout_request_id = $mpesaResponse['CheckoutRequestID'];
         $order->save();
+    }
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Mpesa initialisation failed. Please check your internet connection!');
     }
 
     // Clear Cart

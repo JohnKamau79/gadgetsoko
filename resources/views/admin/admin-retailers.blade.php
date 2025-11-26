@@ -7,14 +7,16 @@
 
         {{-- SUCCESS MESSAGE --}}
         @if (session('success'))
-            <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            <div class="bg-green-200 text-green-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
                 {{ session('success') }}
             </div>
         @endif
 
         {{-- ERROR MESSAGE --}}
         @if (session('error'))
-            <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            <div class="bg-red-200 text-red-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
                 {{ session('error') }}
             </div>
         @endif
@@ -37,7 +39,15 @@
                             <td class="p-3">{{ $retailer->email }}</td>
                             <td class="p-3">{{ $retailer->created_at->format('Y-m-d') }}</td>
 
-                            <td class="p-3">
+                            <td class="p-3 flex gap-2">
+                                <form action="{{ route('admin.retailers.revoke', $retailer->id) }}" method="POST">
+                                    @csrf
+                                    <button onclick="return confirm('Demote to user?')"
+                                        class="bg-red-700 text-white px-3 py-1 rounded hover:bg-red-600">
+                                        Demote
+                                    </button>
+                                </form>
+
                                 <form action="{{ route('admin.users.destroy', $retailer->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')

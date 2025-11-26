@@ -120,7 +120,7 @@
             {{ session('error') }}
         </div>
     @endif
-
+ 
     
 <!-- PRODUCTS GRID -->
 <section class="py-16 bg-gray-100">

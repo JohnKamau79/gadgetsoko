@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -22,21 +23,19 @@ Route::get('/', function () {
 
 // Pages Routes
 Route::prefix('/')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('home', function () {
-        return view('home');
-    })->name('home');
+    Route::get('home', [ProductController::class, 'homeIndex'])->name('home');
+
     Route::get('about', function () {
         return view('about');
     })->name('about');
     Route::get('testimonial', function () {
         return view('testimonial');
     })->name('testimonial');
-    Route::get('contact', function () {
-        return view('contact');
-    })->name('contact');
+    Route::get('/contact', function () {
+    return view('contact'); // or your Blade file name
+})->name('contact');
+    Route::post('contact', [ContactController::class, 'submitForm'])->name('contact.submit');
     Route::get('product', [ProductController::class, 'index'])->name('product');
-    // Route::get('cart', function () {
-    //     return view('cart');})->name('cart');
 });
 
 // Products Routes
@@ -58,7 +57,11 @@ Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () 
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::delete('/admin/users/{id}', action: [AdminController::class, 'removeUser'])->middleware('admin')->name('admin.users.destroy');
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::delete('/users/{id}', action: [AdminController::class, 'removeUser'])->name('admin.users.destroy');
+    Route::post('/retailers/{id}/make', [AdminController::class, 'makeRetailer'])->name('admin.retailers.make');
+    Route::post('/retailers/{id}/revoke', [AdminController::class, 'revokeRetailer'])->name('admin.retailers.revoke');
+});
 
 // Route::prefix('/dashboard')->middleware(['auth', 'verified'])->group(function () {
 

@@ -7,14 +7,16 @@
 
         {{-- SUCCESS MESSAGE --}}
         @if (session('success'))
-            <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
+            <div class="bg-green-200 text-green-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
                 {{ session('success') }}
             </div>
         @endif
 
         {{-- ERROR MESSAGE --}}
         @if (session('error'))
-            <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
+            <div class="bg-red-200 text-red-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
                 {{ session('error') }}
             </div>
         @endif
@@ -43,10 +45,10 @@
 
 
                                 {{-- Edit Button --}}
-                                    <a href="{{ route('products.edit', $product) }}"
-                                        class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
-                                        Edit
-                                    </a>
+                                <a href="{{ route('products.edit', $product) }}"
+                                    class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                                    Edit
+                                </a>
                                 {{-- Delete Button --}}
                                 <form action="{{ route('products.delete', $product) }}" method="POST">
                                     @csrf

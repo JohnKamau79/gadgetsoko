@@ -1,19 +1,21 @@
 @extends('user.user-dashboard')
 
 @section('userDashboardContent')
-    {{-- SUCCESS MESSAGE --}}
-    @if (session('success'))
-        <div class="bg-green-200 text-green-800 p-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+            {{-- SUCCESS MESSAGE --}}
+        @if (session('success'))
+            <div class="bg-green-200 text-green-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    {{-- ERROR MESSAGE --}}
-    @if (session('error'))
-        <div class="bg-red-200 text-red-800 p-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
+        {{-- ERROR MESSAGE --}}
+        @if (session('error'))
+            <div class="bg-red-200 text-red-800 p-3 rounded mb-4" x-data="{ show: true }" x-show="show" x-transition
+                x-init="setTimeout(() => show = false, 4000)">
+                {{ session('error') }}
+            </div>
+        @endif
 
     <div class="p-6">
         <h1 class="text-3xl font-bold mb-6 text-blue-700">My Orders</h1>
