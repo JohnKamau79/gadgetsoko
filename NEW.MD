@@ -3,4 +3,4 @@
     {{ $slot }}
 </button>
 
-
+composer require maatwebsite/excel

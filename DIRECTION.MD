@@ -6,10 +6,9 @@ GUEST.BLADE FOR REGISTER AND LOGIN
 
 # LOGIC
 
-_Add static images to website
+
 _Contact Map addition
-_Footer and contact email, phone, maybe location href
-_CTA and href linking
+
 
 _pending state change
 _product quantity column and logic addition
@@ -17,12 +16,7 @@ _product quantity column and logic addition
 
 # STYLING
 
-_Make it two page, cta for more testimonials not shown on navbar
-_style product and testimonial review pages especially the forms
-_Similar colors
-_responsiveness
-_login/register form bg and styling
-_dark theme
+
 
 # FINALS
 
@@ -40,5 +34,13 @@ _Admin to approve retailer role
 _profile avatar, firstname, lastname etc addition and styling
 _featured products and reviews fetch for homepage
 _Contact form via email
-
+_Add static images to website
+_Footer and contact email, phone, maybe location href
+_CTA and href linking
+_Make it two page, cta for more testimonials not shown on navbar
+_style product and testimonial review pages especially the forms
+_Similar colors
+_responsiveness
+_login/register form bg and styling
+_dark theme
 
