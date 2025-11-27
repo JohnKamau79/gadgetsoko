@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,36 +58,16 @@ Route::prefix('/products')->middleware(['auth', 'verified'])->group(function () 
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard/reports/download', [ReportController::class, 'downloadPDF'])
+    ->middleware(['auth', 'verified'])
+    ->name('reports.download');
+
+
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{id}', action: [AdminController::class, 'removeUser'])->name('admin.users.destroy');
     Route::post('/retailers/{id}/make', [AdminController::class, 'makeRetailer'])->name('admin.retailers.make');
     Route::post('/retailers/{id}/revoke', [AdminController::class, 'revokeRetailer'])->name('admin.retailers.revoke');
 });
-
-// Route::prefix('/dashboard')->middleware(['auth', 'verified'])->group(function () {
-
-//     Route::get('/adminUsers', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminRetailers', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminAdmins', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminProducts', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminWebsiteReviews', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminProductReviews', function () {
-//         return view('contact');
-//     })->name('contact');
-//     Route::get('/adminProducts', function () {
-//         return view('contact');
-//     })->name('contact');
-// });
 
 
 Route::middleware('auth')->group(function () {

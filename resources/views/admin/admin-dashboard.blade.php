@@ -36,5 +36,5 @@
 @endsection
 
 @section('dashboardContent')
-    @yield('adminDashboardContent')
+    @yield(section: 'adminDashboardContent')
 @endsection
