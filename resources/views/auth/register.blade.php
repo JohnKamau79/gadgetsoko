@@ -41,8 +41,6 @@
                                                   focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-500 dark:bg-gray-700 dark:text-gray-100">
                     <option value="">-- Select Role --</option>
                     <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                    <option value="retailer" {{ old('role') == 'retailer' ? 'selected' : '' }}>Retailer</option>
-                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
                 <x-input-error :messages="$errors->get('role')" class="mt-1 text-sm text-red-500"/>
             </div>

@@ -41,7 +41,7 @@
                             <td class="p-3 text-gray-800 dark:text-gray-100">{{ $product->title }}</td>
                             <td class="p-3 text-gray-800 dark:text-gray-100">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3 text-gray-800 dark:text-gray-100">{{ $product->quantity ?? 'N/A' }}</td>
-                            <td class="p-3 text-gray-800 dark:text-gray-100">{{ $product->user->firstName }}</td>
+                            <td class="p-3 text-gray-800 dark:text-gray-100">{{ $product->user->firstName ?? 'user' }}</td>
                             <td class="p-3 text-gray-800 dark:text-gray-100">{{ $product->created_at->format('Y-m-d') }}</td>
 
                             <td class="p-3 flex gap-2">
